@@ -137,7 +137,7 @@ export class ProductModel extends Model<IProductModel> {
     }
   }
   
-  validateContacts(){
+  validateContacts() {
     const errors: typeof this.formContactsErrors = {};
     if (!this.order.email) {
       errors.email = 'Укажите почту. ';
@@ -168,11 +168,11 @@ export class ProductModel extends Model<IProductModel> {
     this.events.emit('catalogItems:changed');
   }
 
-  checkNullItemsPost() {
-    const nullPriceItem = this._catalog.find(item => item.price === null);
-    if (nullPriceItem) {
-      (this._basket = this._basket.filter(id => id !== nullPriceItem.id));
-    }
-  }
+  // checkNullItemsPost() {
+  //   const nullPriceItem = this._catalog.find(item => item.price === null);
+  //   if (nullPriceItem) {
+  //     (this._basket = this._basket.filter(id => id !== nullPriceItem.id));
+  //   }
+  // }
 
 }

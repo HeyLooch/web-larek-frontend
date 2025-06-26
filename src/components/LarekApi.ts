@@ -1,9 +1,18 @@
-import {IApi, ICard, payment} from '../types';
+import {IApi, payment} from '../types';
 
 export type ApiListResponse<Type> = {
   total: number,
   items: Type[]
 };
+
+interface ICardApi {
+  id: string;
+  category: string;
+  title: string;
+  description: string;
+  image: string;
+  price: number | null;
+}
 
 interface IOrder {
   payment: payment,
@@ -21,8 +30,8 @@ export class LarekApi {
     this._baseApi = baseApi;
   }
 
-  getProductList(): Promise<ApiListResponse<ICard>> {
-    return this._baseApi.get<ApiListResponse<ICard>>('/product/')
+  getProductList(): Promise<ApiListResponse<ICardApi>> {
+    return this._baseApi.get<ApiListResponse<ICardApi>>('/product/')
       .then(data => ({ 
         ...data, 
         items: data.items.map(item => ({ ...item, image: this._baseApi.cdn + item.image.replace('.svg', '.png') })) 
