@@ -1,26 +1,15 @@
-import {IApi, payment} from '../types';
+import {IApi, IProduct, ICustomerData} from '../types';
 
 export type ApiListResponse<Type> = {
-  total: number,
-  items: Type[]
+  items: Type[];
+  total: number;
 };
 
-interface ICardApi {
-  id: string;
-  category: string;
-  title: string;
-  description: string;
-  image: string;
-  price: number | null;
-}
+interface ApiOrderResponse extends Pick<IOrder, 'total'>, Pick<IProduct, 'id'> {}
 
-interface IOrder {
-  payment: payment,
-  email: string,
-  phone: string,
-  address: string,
-  total: number,
-  items: string[]
+interface IOrder extends ICustomerData {
+  items: string[];
+  total: number;
 }
 
 export class LarekApi {
@@ -30,15 +19,15 @@ export class LarekApi {
     this._baseApi = baseApi;
   }
 
-  getProductList(): Promise<ApiListResponse<ICardApi>> {
-    return this._baseApi.get<ApiListResponse<ICardApi>>('/product/')
+  getProductList(): Promise<ApiListResponse<IProduct>> {
+    return this._baseApi.get<ApiListResponse<IProduct>>('/product/')
       .then(data => ({ 
         ...data, 
         items: data.items.map(item => ({ ...item, image: this._baseApi.cdn + item.image.replace('.svg', '.png') })) 
       }));
   }
 
-  postOrder(orderData: IOrder): Promise<ApiListResponse<IOrder>> {
-      return this._baseApi.post<ApiListResponse<IOrder>>('/order', orderData, 'POST')
+  postOrder(orderData: IOrder): Promise<ApiOrderResponse> {
+      return this._baseApi.post<ApiOrderResponse>('/order', orderData, 'POST')
   }
 }
