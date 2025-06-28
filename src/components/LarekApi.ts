@@ -28,6 +28,6 @@ export class LarekApi {
   }
 
   postOrder(orderData: IOrder): Promise<ApiOrderResponse> {
-      return this._baseApi.post<ApiOrderResponse>('/order', orderData, 'POST')
+    return this._baseApi.post<ApiOrderResponse>('/order', orderData, 'POST')
   }
 }

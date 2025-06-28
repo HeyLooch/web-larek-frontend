@@ -22,7 +22,7 @@ export class BasketView extends View<IBasketView> {
     
     if (this._button) {
       this._button.addEventListener('click', () => {
-        events.emit('order:open', {items: this.items, total: this._total});
+        events.emit('order:open');
       });
     }
       this.items = [];
@@ -41,7 +41,9 @@ export class BasketView extends View<IBasketView> {
     }
     
     set total(total: number) {
-      this._total.textContent = String(total);
+      if (total === 1) this._total.textContent = `${total} синапс`;
+      if (total === 2 || total === 3 || total === 4) this._total.textContent = `${total} синапса`;
+      this._total.textContent = `${total} синапсов`;
     }
 
   }

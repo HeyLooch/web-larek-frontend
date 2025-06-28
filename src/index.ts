@@ -9,7 +9,6 @@ import { CardCatalogView } from './components/view/CardCatalogView';
 import { CardPreView } from './components/view/CardPreView';
 import { ProductModel } from './components/ProductModel';
 import { ModalView } from './components/view/ModalView';
-import { CardsContainer } from './components/view/CardsContainer';
 import { PageView } from './components/view/PageView';
 import { BasketView } from './components/view/BasketView';
 import { BasketItemView } from './components/view/BasketItemView';
@@ -35,7 +34,6 @@ const successTemplate = ensureElement<HTMLTemplateElement>("#success");
 
 const page = new PageView(ensureElement<HTMLTemplateElement>(".page"), events);
 const modal = new ModalView(ensureElement<HTMLDivElement>("#modal-container"), events); 
-const cardsContainer = new CardsContainer(ensureElement<HTMLElement>('.gallery'));
 const cardPreView = new CardPreView(cloneTemplate(preViewTemplate), events);
 const cardBasket = new BasketView(cloneTemplate(BasketTemplate), events);
 const formOrder = new FormOrderView(cloneTemplate(formOrderTemplate), events);
@@ -64,7 +62,7 @@ events.on('catalogItems:changed', () => {
     });
     return cardInstance.render(item);
   })
-  cardsContainer.render({ catalog: cardsArray })
+  page.render({catalog: cardsArray});
 })
 
 //работа карточки PreView
@@ -75,12 +73,12 @@ events.on('card:select', (data: {id: string, title: string, price: number, image
     price: data.price, 
     image: data.image, 
     category: data.category,
-    description: data.description, 
+    description: data.description,
     inBasket: productModel.isBasketItem(data.id),
-    isNull: data.price
-    }),
+		canBuy: productModel.isCanBuy(data.id),
+    })
   });
-})
+});
 
 //работа корзины
 events.on('card:buy', (data: {id: string}) => {
@@ -167,7 +165,7 @@ events.on('contacts:submit', () => {
     items: productModel.basket
   })
   .then(response => {
-    modal.render({ content: success.render({description: String(response.total)}) })
+    modal.render({ content: success.render({description: String(response.total)}) });
     productModel.reset();
   })
   .catch(err => {
@@ -176,7 +174,6 @@ events.on('contacts:submit', () => {
 });
 
 events.on('order:success', () => {
-  page.counter = 0;
   modal.close();
 });
 

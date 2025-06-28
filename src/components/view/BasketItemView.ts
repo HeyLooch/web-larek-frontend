@@ -21,7 +21,6 @@ export class BasketItemView extends CardView<IBasketItemView> {
   }
 
     set ItemCounter(value: number) {
-      value++;
-      this._itemCounter.textContent = String(value -1);
+      this._itemCounter.textContent = String(value);
     }
 }

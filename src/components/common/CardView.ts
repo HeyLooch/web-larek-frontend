@@ -19,16 +19,12 @@ export class CardView<T> extends View<T & ICard> {
     this._id = id;
   }
 
-  get id() {
-    return this._id;
-  }
-
   set title(title: string) {
       this._title.textContent = title;
     }
 
   set price(price: number) {
-      this._price.textContent = String(price);
+      this._price.textContent = `${price} синапсов` ;
 
       if (price === null) {
       this._price.textContent = 'бесценно';

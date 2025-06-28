@@ -4,7 +4,7 @@ import { ensureElement } from '../../utils/utils';
 
 interface ICardPreView extends Pick<IProduct, 'description'> {
   inBasket: boolean;
-  isNull: number | null;
+  canBuy: boolean;
 }
 
 export class CardPreView extends CardCatalogView<ICardPreView> {
@@ -21,30 +21,25 @@ export class CardPreView extends CardCatalogView<ICardPreView> {
     events.emit('card:buy', {id: this._id});
   });
   
-  }
+}
 
   set description(description: string) {
     this._description.textContent = description;
   }
 
   set inBasket(value: boolean) {
-    if (this._buyButton) {
-        this.changeDisabledState(this._buyButton, value);
-        this._buyButton.textContent = ( value ? 'Уже в корзине' : 'В корзину');
+    if (!value) {
+      this._buyButton.textContent = 'В корзину';
+     } else {
+      this._buyButton.textContent = 'Уже в корзине'
     }
   }
 
-  set isNull(value: number | null) {
-    if (value === null) {
+  set canBuy(value: boolean) {
+    if (!value) {
       this._buyButton.disabled = true;
-    }
-  }
-  
-  changeDisabledState(button: HTMLButtonElement, value: boolean) {
-    if (!button.disabled) {
-      button.disabled = value;
     } else {
-      button.disabled = value;
+      this._buyButton.disabled = false;
     }
   }
 

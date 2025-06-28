@@ -7,7 +7,7 @@ interface IFormState {
   errors: string[];
 }
 
-export class Form<T> extends View<IFormState> {
+export class FormView<T> extends View<IFormState> {
   protected _submit: HTMLButtonElement;
   protected _errors: HTMLElement;
 

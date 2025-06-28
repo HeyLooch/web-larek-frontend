@@ -1,11 +1,10 @@
 import { IEvents, payment, ICustomerData } from "../../types";
 import { ensureElement } from "../../utils/utils";
-import { Form } from "../common/FormView";
+import { FormView } from "../common/FormView";
 
 interface IOrderForm extends Pick<ICustomerData, 'payment' | 'address'> {}
 
-export class FormOrderView extends Form<IOrderForm> {
-  _payment: payment; 
+export class FormOrderView extends FormView<IOrderForm> {
   _address: HTMLInputElement;
   cardButton: HTMLButtonElement;
   cashButton : HTMLButtonElement;
@@ -32,22 +31,8 @@ export class FormOrderView extends Form<IOrderForm> {
   }
 
   set payment(value: payment) {
-    this._payment = value;
-  
-    if (this._payment === 'card') {
-      this.cardButton.classList.add('button_alt-active');
-      this.cashButton.classList.remove('button_alt-active');
-    }
-
-    if (this._payment === 'cash') {
-      this.cashButton.classList.add('button_alt-active');
-      this.cardButton.classList.remove('button_alt-active');
-    }
-
-    if (!this._payment) {
-      this.cashButton.classList.remove('button_alt-active');
-      this.cardButton.classList.remove('button_alt-active');
-    }
-  }
+      this.cardButton.classList.toggle('button_alt-active', value === 'card');
+      this.cashButton.classList.toggle('button_alt-active', value === 'cash');
+  } 
 
 }

@@ -58,6 +58,10 @@ export class ProductModel extends Model<IProductModel> {
   isBasketItem(id: string) {
     return this._basket.some(itemId => itemId === id);
   }
+
+  isCanBuy(id: string) {
+    return !this._basket.some(itemId => itemId === id) && this._catalog.find(item => item.id === id).price !== null
+  }
   
   resetBasket() {
     this._basket = [];
@@ -144,22 +148,17 @@ export class ProductModel extends Model<IProductModel> {
     this.formContactsErrors = errors;
     return Object.keys(errors).length === 0;
   }
-  
-  resetOrderForm() {
+
+  resetForms() {
     this.order.address = '';
     this.order.payment = null;
-  }
-  
-  resetContactsForm() {
     this.order.email = '';
     this.order.phone = '';
   }
 
   reset() {
-    this.resetOrderForm();
-    this.resetContactsForm();
-    this._basket = [];
-    this.events.emit('catalogItems:changed');
+    this.resetForms();
+    this.resetBasket();
   }
 
 }
