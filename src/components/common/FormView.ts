@@ -28,7 +28,6 @@ export class FormView<T> extends View<IFormState> {
     this.container.addEventListener('submit', (evt: Event) => {
         evt.preventDefault();
         this.events.emit(`${this.container.name}:submit`);
-        this.container.reset();
     });
   }
 
